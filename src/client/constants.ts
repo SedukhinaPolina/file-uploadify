@@ -10,5 +10,5 @@ export const CHUNK_UPLOAD_CONFIG = {
     CHUNKED_UPLOAD_THRESHOLD: 5 * 1024 * 1024,
 };
 
-export const DEFAULT_MAX_FILES = 10;
-export const DEFAULT_MAX_SIZE = 100 * 1024 * 1024;
+export const DEFAULT_MAX_FILES = 5;
+export const DEFAULT_MAX_SIZE = 10 * 1024 * 1024;

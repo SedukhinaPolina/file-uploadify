@@ -12,6 +12,9 @@ export const FileSelector = ({ onFilesSelected, maxFiles }: FileSelectorProps) =
         const files = Array.from(e.target.files || []);
         if (files.length > 0) {
             onFilesSelected(files);
+            if (inputRef.current) {
+                inputRef.current.value = '';
+            }
         }
     };
 

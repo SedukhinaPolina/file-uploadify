@@ -1,8 +1,7 @@
 import axios from 'axios';
 
+import { API_URLS, CHUNK_UPLOAD_CONFIG } from '../constants.ts';
 import { UploadStrategy, UploadStatus, type UploadFileOptions, type UploadFileResult } from '../types/upload.types';
-
-import { API_URLS, UPLOAD_CONFIG } from './constants.ts';
 
 export const uploadFile = async (file: File, options: UploadFileOptions): Promise<UploadFileResult> => {
     try {
@@ -61,8 +60,8 @@ export const uploadChunked = async (file: File, options: UploadFileOptions): Pro
     let uploadedChunks = 0;
 
     try {
-        for (let i = 0; i < chunks.length; i += UPLOAD_CONFIG.CONCURRENT_UPLOADS) {
-            const batch = chunks.slice(i, Math.min(i + UPLOAD_CONFIG.CONCURRENT_UPLOADS, chunks.length));
+        for (let i = 0; i < chunks.length; i += CHUNK_UPLOAD_CONFIG.CONCURRENT_UPLOADS) {
+            const batch = chunks.slice(i, Math.min(i + CHUNK_UPLOAD_CONFIG.CONCURRENT_UPLOADS, chunks.length));
 
             await Promise.all(
                 batch.map(async (chunk, batchIndex) => {
@@ -104,7 +103,7 @@ const createChunks = (file: File): Blob[] => {
     let start = 0;
 
     while (start < file.size) {
-        const end = Math.min(start + UPLOAD_CONFIG.CHUNK_SIZE, file.size);
+        const end = Math.min(start + CHUNK_UPLOAD_CONFIG.CHUNK_SIZE, file.size);
         chunks.push(file.slice(start, end));
         start = end;
     }

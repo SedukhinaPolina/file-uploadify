@@ -10,6 +10,15 @@ export enum UploadStrategy {
     CHUNKED = 'chunked',
 }
 
+export interface UploadFile {
+    id: string;
+    file: File;
+    progress: number;
+    status: UploadStatus;
+    error?: string;
+    uploadStrategy: UploadStrategy;
+}
+
 export interface UploadFileOptions {
     strategy: UploadStrategy;
     onProgress?: (progress: number) => void;

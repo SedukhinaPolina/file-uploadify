@@ -1,5 +1,7 @@
 import { type ReactElement } from 'react';
 
+import { FileUpload } from './components/FileUpload';
+
 export const App = (): ReactElement => {
     return (
         <main className="relative isolate h-dvh">
@@ -10,11 +12,10 @@ export const App = (): ReactElement => {
                 className="absolute inset-0 -z-10 h-full w-full object-cover object-top"
             />
 
-            <div className="mx-auto max-w-7xl px-6 py-32 text-center sm:py-40 lg:px-8">
-                <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-800 sm:text-5xl">Hello there</h1>
-                <p className="mt-4 text-base text-gray-900 sm:mt-6">
-                    Everything brand starts small, let&apos;s build something great.
-                </p>
+            <div className="p-4">
+                <section className="max-w-3xl p-4 bg-white bg-opacity-95 rounded-lg shadow-lg">
+                    <FileUpload maxFiles={5} maxSize={50 * 1024 * 1024} />
+                </section>
             </div>
         </main>
     );

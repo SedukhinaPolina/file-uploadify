@@ -124,4 +124,50 @@ describe('FileUpload Component', () => {
             );
         });
     });
+
+    it('should update progress', async () => {
+        const mockUpload = vi.fn().mockImplementation((_, options: { onProgress?: (progress: number) => void }) => {
+            if (options.onProgress) {
+                options.onProgress(25);
+                options.onProgress(50);
+                options.onProgress(100);
+            }
+            return Promise.resolve({ status: UploadStatus.COMPLETED });
+        });
+        mockStrategy = createMockStrategy(mockUpload);
+
+        render(<FileUpload uploadStrategy={mockStrategy} />);
+
+        const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+        const input = screen.getByLabelText(/choose files to upload/i);
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(screen.getByText('completed')).toBeInTheDocument();
+            expect(screen.getByText('100%')).toBeInTheDocument();
+        });
+    });
+
+    it('should remove file', async () => {
+        const mockUpload = vi.fn().mockResolvedValue({
+            status: UploadStatus.COMPLETED,
+        });
+        mockStrategy = createMockStrategy(mockUpload);
+
+        render(<FileUpload uploadStrategy={mockStrategy} />);
+
+        const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+        const input = screen.getByLabelText(/choose files to upload/i);
+
+        fireEvent.change(input, { target: { files: [file] } });
+        await waitFor(() => {
+            expect(screen.getByText('test.txt')).toBeInTheDocument();
+        });
+
+        const removeButton = screen.getByRole('button', { name: /remove file/i });
+        fireEvent.click(removeButton);
+
+        expect(screen.queryByText('test.txt')).not.toBeInTheDocument();
+    });
 });

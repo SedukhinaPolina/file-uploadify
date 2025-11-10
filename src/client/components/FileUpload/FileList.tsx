@@ -24,6 +24,8 @@ export const FileList = ({ files, onRemove }: FileListProps) => {
                                 <span className={`${STATUS_COLORS[file.status]} capitalize`}>{file.status}</span>
                                 <span className="text-gray-500">{file.progress}%</span>
                             </div>
+                            {file.error && <p className="mt-1 text-xs text-red-600">{file.error}</p>}
+
                             <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
                                 <div
                                     className="bg-cyan-600 h-2 rounded-full transition-all duration-300"
@@ -31,8 +33,6 @@ export const FileList = ({ files, onRemove }: FileListProps) => {
                                 />
                             </div>
                         </div>
-
-                        {file.error && <p className="mt-1 text-xs text-red-600">{file.error}</p>}
                     </div>
 
                     <button

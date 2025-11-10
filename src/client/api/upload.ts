@@ -1,15 +1,15 @@
 import axios from 'axios';
 
 import { API_URLS, CHUNK_UPLOAD_CONFIG } from '../constants.ts';
-import { UploadStrategy, UploadStatus, type UploadFileOptions, type UploadFileResult } from '../types/upload.types';
+import { UploadMethod, UploadStatus, type UploadFileOptions, type UploadFileResult } from '../types/upload.types';
 
 export const uploadFile = async (file: File, options: UploadFileOptions): Promise<UploadFileResult> => {
     try {
         const uploader = {
-            [UploadStrategy.SINGLE]: uploadSingle,
-            [UploadStrategy.CHUNKED]: uploadChunked,
+            [UploadMethod.SINGLE]: uploadSingle,
+            [UploadMethod.CHUNKED]: uploadChunked,
         };
-        return await uploader[options.strategy](file, options);
+        return await uploader[options.method](file, options);
     } catch (error) {
         if (axios.isCancel(error)) {
             return {

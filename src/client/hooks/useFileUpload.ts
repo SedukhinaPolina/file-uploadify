@@ -18,7 +18,7 @@ export const useFileUpload = ({ onProgress, onComplete, onError }: UseFileUpload
         async (file: UploadFile) => {
             try {
                 const result = await uploadFile(file.file, {
-                    strategy: file.uploadStrategy,
+                    method: file.uploadMethod,
                     onProgress: (progress) => {
                         onProgress(file.id, progress);
                     },

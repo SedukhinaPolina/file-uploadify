@@ -5,7 +5,7 @@ export enum UploadStatus {
     ERROR = 'error',
 }
 
-export enum UploadStrategy {
+export enum UploadMethod {
     SINGLE = 'single',
     CHUNKED = 'chunked',
 }
@@ -16,11 +16,11 @@ export interface UploadFile {
     progress: number;
     status: UploadStatus;
     error?: string;
-    uploadStrategy: UploadStrategy;
+    uploadMethod: UploadMethod;
 }
 
 export interface UploadFileOptions {
-    strategy: UploadStrategy;
+    method: UploadMethod;
     onProgress?: (progress: number) => void;
     signal?: AbortSignal;
 }

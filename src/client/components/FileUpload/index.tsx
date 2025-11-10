@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 
 import { CHUNK_UPLOAD_CONFIG, DEFAULT_MAX_FILES, DEFAULT_MAX_SIZE } from '../../constants.ts';
 import { useFileUpload } from '../../hooks/useFileUpload';
-import { type UploadFile, UploadStatus, UploadStrategy } from '../../types/upload.types';
+import { type UploadFile, UploadStatus, UploadMethod } from '../../types/upload.types';
 
 import { FileList } from './FileList';
 import { FileSelector } from './FileSelector';
@@ -59,10 +59,10 @@ export const FileUpload = ({ maxFiles = DEFAULT_MAX_FILES, maxSize = DEFAULT_MAX
                 file,
                 progress: 0,
                 status: UploadStatus.PENDING,
-                uploadStrategy:
+                uploadMethod:
                     file.size >= CHUNK_UPLOAD_CONFIG.CHUNKED_UPLOAD_THRESHOLD
-                        ? UploadStrategy.CHUNKED
-                        : UploadStrategy.SINGLE,
+                        ? UploadMethod.CHUNKED
+                        : UploadMethod.SINGLE,
             }));
 
             setFiles((prev) => [...prev, ...filesToAdd]);

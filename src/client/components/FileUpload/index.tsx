@@ -1,18 +1,24 @@
 import { useState, useCallback } from 'react';
 
 import { CHUNK_UPLOAD_CONFIG, DEFAULT_MAX_FILES, DEFAULT_MAX_SIZE } from '../../constants.ts';
-import { useFileUpload } from '../../hooks/useFileUpload';
-import { type UploadFile, UploadStatus, UploadMethod } from '../../types/upload.types';
 
 import { FileList } from './FileList';
 import { FileSelector } from './FileSelector';
+import { useFileUpload } from './hooks/useFileUpload';
+import { type IUploadStrategy } from './types/UploadFileStrategy.interface.ts';
+import { type UploadFile, UploadStatus, UploadMethod } from './types/upload.types';
 
 interface FileUploadProps {
+    uploadStrategy: IUploadStrategy;
     maxFiles?: number;
     maxSize?: number;
 }
 
-export const FileUpload = ({ maxFiles = DEFAULT_MAX_FILES, maxSize = DEFAULT_MAX_SIZE }: FileUploadProps) => {
+export const FileUpload = ({
+    uploadStrategy,
+    maxFiles = DEFAULT_MAX_FILES,
+    maxSize = DEFAULT_MAX_SIZE,
+}: FileUploadProps) => {
     const [files, setFiles] = useState<UploadFile[]>([]);
 
     const handleProgress = useCallback((id: string, progress: number) => {
@@ -34,6 +40,7 @@ export const FileUpload = ({ maxFiles = DEFAULT_MAX_FILES, maxSize = DEFAULT_MAX
     }, []);
 
     const { upload } = useFileUpload({
+        uploadStrategy,
         onProgress: handleProgress,
         onComplete: handleComplete,
         onError: handleError,

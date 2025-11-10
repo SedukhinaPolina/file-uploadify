@@ -1,4 +1,4 @@
-import { type UploadFile, UploadStatus } from '../../types/upload.types.ts';
+import { type UploadFile, UploadStatus } from './types/upload.types.ts';
 
 interface FileListProps {
     files: UploadFile[];

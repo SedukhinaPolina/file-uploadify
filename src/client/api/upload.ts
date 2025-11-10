@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+import {
+    UploadMethod,
+    UploadStatus,
+    type UploadFileOptions,
+    type UploadFileResult,
+} from '../components/FileUpload/types/upload.types';
 import { API_URLS, CHUNK_UPLOAD_CONFIG } from '../constants.ts';
-import { UploadMethod, UploadStatus, type UploadFileOptions, type UploadFileResult } from '../types/upload.types';
 
 export const uploadFile = async (file: File, options: UploadFileOptions): Promise<UploadFileResult> => {
     try {

@@ -1,6 +1,8 @@
 import { type ReactElement } from 'react';
 
 import { FileUpload } from './components/FileUpload';
+import { DEFAULT_UPLOAD_STRATEGY } from './constants.ts';
+import { uploadStrategyFactory } from './strategies/UploadStrategyFactory.ts';
 
 export const App = (): ReactElement => {
     return (
@@ -14,7 +16,11 @@ export const App = (): ReactElement => {
 
             <div className="p-4">
                 <section className="max-w-3xl p-4 bg-white bg-opacity-95 rounded-lg shadow-lg">
-                    <FileUpload maxFiles={5} maxSize={50 * 1024 * 1024} />
+                    <FileUpload
+                        uploadStrategy={uploadStrategyFactory.get(DEFAULT_UPLOAD_STRATEGY)}
+                        maxFiles={5}
+                        maxSize={50 * 1024 * 1024}
+                    />
                 </section>
             </div>
         </main>

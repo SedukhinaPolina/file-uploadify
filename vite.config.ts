@@ -5,6 +5,9 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
     plugins: [react()],
     test: {
+        environment: 'jsdom',
+        setupFiles: ['./src/client/test-setup.ts'],
+        globals: true,
         env: {
             NODE_ENV: 'test',
         },

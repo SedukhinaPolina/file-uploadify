@@ -73,7 +73,7 @@ describe('FileUpload Component', () => {
     });
 
     it('max files limit', () => {
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
 
         render(<FileUpload uploadStrategy={mockStrategy} maxFiles={1} />);
 
@@ -84,12 +84,12 @@ describe('FileUpload Component', () => {
         fireEvent.change(input, { target: { files: [file1] } });
         fireEvent.change(input, { target: { files: [file2] } });
 
-        expect(consoleSpy).toHaveBeenCalledWith('Exceeded maximum number of files');
-        consoleSpy.mockRestore();
+        expect(alertSpy).toHaveBeenCalledWith('Exceeded maximum number of files');
+        alertSpy.mockRestore();
     });
 
     it('max file size limit', () => {
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
         const maxSize = 1024;
 
         render(<FileUpload uploadStrategy={mockStrategy} maxSize={maxSize} />);
@@ -99,8 +99,8 @@ describe('FileUpload Component', () => {
 
         fireEvent.change(input, { target: { files: [largeFile] } });
 
-        expect(consoleSpy).toHaveBeenCalledWith('Exceeded file size limit');
-        consoleSpy.mockRestore();
+        expect(alertSpy).toHaveBeenCalledWith('Exceeded file size limit');
+        alertSpy.mockRestore();
     });
 
     it('chunked upload for large files', async () => {

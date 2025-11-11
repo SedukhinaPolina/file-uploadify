@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
+import { CHUNK_UPLOAD_CONFIG } from '../../../constants';
 import { FileUpload } from '../index';
 import { type IUploadStrategy } from '../types/UploadFileStrategy.interface';
 import { UploadStatus } from '../types/upload.types';
@@ -93,7 +94,7 @@ describe('FileUpload Component', () => {
 
         render(<FileUpload uploadStrategy={mockStrategy} maxSize={maxSize} />);
 
-        const largeFile = new File(['x'.repeat(maxSize + 1)], 'large.txt', { type: 'text/plain' });
+        const largeFile = new File(['1'.repeat(maxSize + 1)], 'large.txt', { type: 'text/plain' });
         const input = screen.getByLabelText(/choose files to upload/i);
 
         fireEvent.change(input, { target: { files: [largeFile] } });
@@ -110,7 +111,7 @@ describe('FileUpload Component', () => {
 
         render(<FileUpload uploadStrategy={mockStrategy} />);
 
-        const largeFile = new File(['1'.repeat(5 * 1024 * 1024 + 1)], 'large.txt', { type: 'text/plain' });
+        const largeFile = new File(['1'.repeat(CHUNK_UPLOAD_CONFIG.CHUNKED_UPLOAD_THRESHOLD + 1)], 'large.txt', { type: 'text/plain' });
         const input = screen.getByLabelText(/choose files to upload/i);
 
         fireEvent.change(input, { target: { files: [largeFile] } });

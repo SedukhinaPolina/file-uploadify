@@ -56,7 +56,6 @@ describe('FileUpload Integration Test', () => {
                 expect.any(FormData),
                 expect.objectContaining({
                     onUploadProgress: expect.any(Function) as (progressEvent: number) => void,
-                    signal: undefined,
                 })
             );
         });
@@ -125,13 +124,7 @@ describe('FileUpload Integration Test', () => {
 
         await waitFor(
             () => {
-                expect(mockedPost).toHaveBeenCalledWith(
-                    '/api/upload-chunk',
-                    expect.any(FormData),
-                    expect.objectContaining({
-                        signal: undefined,
-                    })
-                );
+                expect(mockedPost).toHaveBeenCalledWith('/api/upload-chunk', expect.any(FormData), {});
             },
             { timeout: 3000 }
         );

@@ -1,4 +1,4 @@
-import { useRef, type ChangeEvent } from 'react';
+import { useRef, useId, type ChangeEvent } from 'react';
 
 interface FileSelectorProps {
     onFilesSelected: (files: File[]) => void;
@@ -7,6 +7,7 @@ interface FileSelectorProps {
 
 export const FileSelector = ({ onFilesSelected, maxFiles }: FileSelectorProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
+    const inputId = useId();
 
     const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
@@ -21,12 +22,12 @@ export const FileSelector = ({ onFilesSelected, maxFiles }: FileSelectorProps) =
     return (
         <div className="w-full">
             <label
-                htmlFor="file-upload"
+                htmlFor={inputId}
                 className="flex justify-center px-6 py-5 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:border-gray-400 transition-colors"
             >
                 <input
                     ref={inputRef}
-                    id="file-upload"
+                    id={inputId}
                     type="file"
                     className="sr-only"
                     multiple

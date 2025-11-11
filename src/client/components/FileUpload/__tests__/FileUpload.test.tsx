@@ -111,7 +111,9 @@ describe('FileUpload Component', () => {
 
         render(<FileUpload uploadStrategy={mockStrategy} />);
 
-        const largeFile = new File(['1'.repeat(CHUNK_UPLOAD_CONFIG.CHUNKED_UPLOAD_THRESHOLD + 1)], 'large.txt', { type: 'text/plain' });
+        const largeFile = new File(['1'.repeat(CHUNK_UPLOAD_CONFIG.CHUNKED_UPLOAD_THRESHOLD + 1)], 'large.txt', {
+            type: 'text/plain',
+        });
         const input = screen.getByLabelText(/choose files to upload/i);
 
         fireEvent.change(input, { target: { files: [largeFile] } });
@@ -170,5 +172,106 @@ describe('FileUpload Component', () => {
         fireEvent.click(removeButton);
 
         expect(screen.queryByText('test.txt')).not.toBeInTheDocument();
+    });
+
+    it('should not render list when showFileList is false', async () => {
+        const mockUpload = vi.fn().mockResolvedValue({
+            status: UploadStatus.COMPLETED,
+        });
+        mockStrategy = createMockStrategy(mockUpload);
+
+        render(<FileUpload uploadStrategy={mockStrategy} showFileList={false} />);
+
+        const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+        const input = screen.getByLabelText(/choose files to upload/i);
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(mockUpload).toHaveBeenCalled();
+        });
+
+        expect(screen.queryByText('test.txt')).not.toBeInTheDocument();
+    });
+
+    it('should call onFilesChange when files are added', async () => {
+        const mockUpload = vi.fn().mockResolvedValue({
+            status: UploadStatus.COMPLETED,
+        });
+        mockStrategy = createMockStrategy(mockUpload);
+        const onFilesChange = vi.fn();
+
+        render(<FileUpload uploadStrategy={mockStrategy} onFilesChange={onFilesChange} />);
+
+        const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+        const input = screen.getByLabelText(/choose files to upload/i);
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(onFilesChange).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        file,
+                        status: UploadStatus.PENDING,
+                    }),
+                ])
+            );
+        });
+    });
+
+    it('should call onFilesChange when files are removed', async () => {
+        const mockUpload = vi.fn().mockResolvedValue({
+            status: UploadStatus.COMPLETED,
+        });
+        mockStrategy = createMockStrategy(mockUpload);
+        const onFilesChange = vi.fn();
+
+        render(<FileUpload uploadStrategy={mockStrategy} onFilesChange={onFilesChange} />);
+
+        const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+        const input = screen.getByLabelText(/choose files to upload/i);
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(screen.getByText('test.txt')).toBeInTheDocument();
+        });
+
+        onFilesChange.mockClear();
+
+        const removeButton = screen.getByRole('button', { name: /remove file/i });
+        fireEvent.click(removeButton);
+
+        expect(onFilesChange).toHaveBeenCalledWith([]);
+    });
+
+    it('should call onFilesChange on progress updates', async () => {
+        const mockUpload = vi.fn().mockImplementation((_, options: { onProgress?: (progress: number) => void }) => {
+            if (options.onProgress) {
+                options.onProgress(50);
+            }
+            return Promise.resolve({ status: UploadStatus.COMPLETED });
+        });
+        mockStrategy = createMockStrategy(mockUpload);
+        const onFilesChange = vi.fn();
+
+        render(<FileUpload uploadStrategy={mockStrategy} onFilesChange={onFilesChange} />);
+
+        const file = new File(['test content'], 'test.txt', { type: 'text/plain' });
+        const input = screen.getByLabelText(/choose files to upload/i);
+
+        fireEvent.change(input, { target: { files: [file] } });
+
+        await waitFor(() => {
+            expect(onFilesChange).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        progress: 50,
+                        status: UploadStatus.UPLOADING,
+                    }),
+                ])
+            );
+        });
     });
 });

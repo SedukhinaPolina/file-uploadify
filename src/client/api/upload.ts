@@ -41,7 +41,6 @@ export const uploadSingle = async (file: File, options: UploadFileOptions): Prom
                     options.onProgress?.(progress);
                 }
             },
-            signal: options.signal,
         });
 
         return {
@@ -77,9 +76,7 @@ export const uploadChunked = async (file: File, options: UploadFileOptions): Pro
                     formData.append('currentChunkIndex', currentChunkIndex.toString());
                     formData.append('totalChunks', totalChunks.toString());
 
-                    await axios.post<{ message: string }>(API_URLS.UPLOAD_CHUNKED, formData, {
-                        signal: options.signal,
-                    });
+                    await axios.post<{ message: string }>(API_URLS.UPLOAD_CHUNKED, formData, {});
 
                     uploadedChunks++;
                     const progress = Math.round((uploadedChunks / totalChunks) * 100);

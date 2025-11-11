@@ -22,7 +22,6 @@ export interface UploadFile {
 export interface UploadFileOptions {
     method: UploadMethod;
     onProgress?: (progress: number) => void;
-    signal?: AbortSignal;
 }
 
 export interface UploadFileResult {

@@ -13,4 +13,4 @@ export const CHUNK_UPLOAD_CONFIG = {
 export const DEFAULT_MAX_FILES = 5;
 export const DEFAULT_MAX_SIZE = 10 * 1024 * 1024;
 
-export const DEFAULT_UPLOAD_STRATEGY = 'api';
+export const DEFAULT_UPLOAD_STRATEGY = import.meta.env.MODE === 'production' ? 'mock' : 'api';

@@ -4,7 +4,10 @@ File upload component for React apps with support for single and chunked uploads
 
 ## Demo
 
-[https://sedukhinalina.github.io/file-uploadify/](https://sedukhinalina.github.io/file-uploadify/)
+**Live Demo:** [https://sedukhinapolina.github.io/file-uploadify/](https://sedukhinapolina.github.io/file-uploadify/)
+
+Note: The live demo uses a mock upload strategy that simulates file uploads in memory.
+To test with the provided API, run the project locally.
 
 ## Features
 
@@ -97,6 +100,11 @@ function App() {
 | `showFileList` | `boolean` | `true` | Show/hide the built-in file list |
 | `onFilesChange` | `(files: UploadFile[]) => void` | - | Callback when files state changes |
 
+### Built-in Strategies
+
+**ApiUploadStrategy** - Uploads using API
+**MockUploadStrategy** - Simulates uploads in memory
+
 ### Creating Custom Upload Strategies
 
 ```tsx
@@ -144,6 +152,7 @@ Technical:
 * Add error boundaries
 * Add Storybook and configurable demo
 * Add E2E tests with Playwright
+* Deploy backend for the live demo
 
 
 ## Mock API

@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 import { CHUNK_UPLOAD_CONFIG } from '../../../constants';
-import { FileUpload } from '../index';
+import { FileUpload, UploadMethod } from '../index';
 import { type IUploadStrategy } from '../types/UploadFileStrategy.interface';
 import { UploadStatus } from '../types/upload.types';
 
@@ -47,7 +47,7 @@ describe('FileUpload Component', () => {
             expect(mockUpload).toHaveBeenCalledWith(
                 file,
                 expect.objectContaining({
-                    method: 'single',
+                    method: UploadMethod.SINGLE,
                 })
             );
         });
@@ -122,7 +122,7 @@ describe('FileUpload Component', () => {
             expect(mockUpload).toHaveBeenCalledWith(
                 largeFile,
                 expect.objectContaining({
-                    method: 'chunked',
+                    method: UploadMethod.CHUNKED,
                 })
             );
         });
